@@ -1,0 +1,6 @@
+ruby_packages.csv filter=lfs diff=lfs merge=lfs -text
+golang_packages.csv filter=lfs diff=lfs merge=lfs -text
+hf_packages.csv filter=lfs diff=lfs merge=lfs -text
+maven_packages.csv filter=lfs diff=lfs merge=lfs -text
+npm_packages.csv filter=lfs diff=lfs merge=lfs -text
+pypi_packages.csv filter=lfs diff=lfs merge=lfs -text
