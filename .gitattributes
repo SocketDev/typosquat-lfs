@@ -1,3 +1,5 @@
 *.npy filter=lfs diff=lfs merge=lfs -text
 *.bin filter=lfs diff=lfs merge=lfs -text
 *.gz filter=lfs diff=lfs merge=lfs -text
+fasttext-vectors.kv filter=lfs diff=lfs merge=lfs -text
+fasttext-vectors.kv.vectors.npy filter=lfs diff=lfs merge=lfs -text
