@@ -1,8 +1,6 @@
 #!/bin/bash
 
 # Configuration
-# PROJECT_ID="socket-research-wenxin"
-# BUCKET_NAME="socket-hf-data"
 BUCKET_NAME_STAGING="socketsecurity-typosquat-models-staging"  # Staging bucket
 BUCKET_NAME_PROD="socketsecurity-typosquat-models-prod"   # Production bucket
 SOURCE_DIR="$(dirname "$(realpath "$0")")"  # Parent directory of the script
@@ -24,15 +22,16 @@ if ! gsutil ls gs://${BUCKET_NAME_PROD} &> /dev/null; then
     exit 1
 fi
 
-# Remove existing .git folders from buckets and copy repository excluding .git
-echo "Cleaning up existing .git folder from staging bucket..."
-gsutil -m rm -r "gs://${BUCKET_NAME_STAGING}/typosquat-lfs/.git" &> /dev/null || true
+# Remove existing typosquat-lfs folder from buckets
+echo "Cleaning up existing typosquat-lfs folder from staging bucket..."
+gsutil -m rm -r "gs://${BUCKET_NAME_STAGING}/typosquat-lfs" &> /dev/null || true
 
-echo "Cleaning up existing .git folder from production bucket..."
-gsutil -m rm -r "gs://${BUCKET_NAME_PROD}/typosquat-lfs/.git" &> /dev/null || true
+echo "Cleaning up existing typosquat-lfs folder from production bucket..."
+gsutil -m rm -r "gs://${BUCKET_NAME_PROD}/typosquat-lfs" &> /dev/null || true
 
+# Copy repository excluding .git folder
 echo "Copying repository (excluding .git) from ${SOURCE_DIR} to staging bucket gs://${BUCKET_NAME_STAGING}..."
-gsutil -m cp -r "${SOURCE_DIR}" "gs://${BUCKET_NAME_STAGING}/" -x "\.git(\/.*)?$"
+gsutil -m cp -r "${SOURCE_DIR}" "gs://${BUCKET_NAME_STAGING}/typosquat-lfs/" -x ".git"
 
 if [ $? -eq 0 ]; then
     echo "Successfully copied repository to staging bucket"
@@ -42,7 +41,7 @@ else
 fi
 
 echo "Copying repository (excluding .git) from ${SOURCE_DIR} to production bucket gs://${BUCKET_NAME_PROD}..."
-gsutil -m cp -r "${SOURCE_DIR}" "gs://${BUCKET_NAME_PROD}/" -x "\.git(\/.*)?$"
+gsutil -m cp -r "${SOURCE_DIR}" "gs://${BUCKET_NAME_PROD}/typosquat-lfs/" -x ".git"
 
 if [ $? -eq 0 ]; then
     echo "Successfully copied repository to production bucket"
