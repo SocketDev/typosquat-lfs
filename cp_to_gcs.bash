@@ -29,9 +29,9 @@ gsutil -m rm -r "gs://${BUCKET_NAME_STAGING}/typosquat-lfs" &> /dev/null || true
 echo "Cleaning up existing typosquat-lfs folder from production bucket..."
 gsutil -m rm -r "gs://${BUCKET_NAME_PROD}/typosquat-lfs" &> /dev/null || true
 
-# Copy repository excluding .git folder
+# Copy repository excluding .git folder using gsutil rsync
 echo "Copying repository (excluding .git) from ${SOURCE_DIR} to staging bucket gs://${BUCKET_NAME_STAGING}..."
-gsutil -m cp -r "${SOURCE_DIR}" "gs://${BUCKET_NAME_STAGING}/typosquat-lfs/" -x ".git"
+gsutil -m rsync -r -x "(\.git.*)" "${SOURCE_DIR}" "gs://${BUCKET_NAME_STAGING}/typosquat-lfs/"
 
 if [ $? -eq 0 ]; then
     echo "Successfully copied repository to staging bucket"
@@ -41,7 +41,7 @@ else
 fi
 
 echo "Copying repository (excluding .git) from ${SOURCE_DIR} to production bucket gs://${BUCKET_NAME_PROD}..."
-gsutil -m cp -r "${SOURCE_DIR}" "gs://${BUCKET_NAME_PROD}/typosquat-lfs/" -x ".git"
+gsutil -m rsync -r -x "(\.git.*)" "${SOURCE_DIR}" "gs://${BUCKET_NAME_PROD}/typosquat-lfs/"
 
 if [ $? -eq 0 ]; then
     echo "Successfully copied repository to production bucket"
